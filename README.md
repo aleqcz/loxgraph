@@ -1,3 +1,13 @@
+>Aleq's updates to Eike's version:
+>* Synchronized graphs
+<br>
+<br>
+
+
+***************************************************************************************************
+_Original Eike's documentation including link to Demo with **original** not enhanced code follows:_
+***************************************************************************************************
+
 Loxgraph
 ========
 
