@@ -1,2 +1,4 @@
 *.sublime-workspace
 tools/loxone-settings.txt
+node_modules/
+stats-2/

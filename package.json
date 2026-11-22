@@ -1,0 +1,10 @@
+{
+  "name": "loxgraph",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Loxone statistics viewer",
+  "scripts": {
+    "start": "node serve.mjs",
+    "start:own": "node serve.mjs stats-2"
+  }
+}
