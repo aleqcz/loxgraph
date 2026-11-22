@@ -8,6 +8,7 @@
   },
   "scripts": {
     "start": "node serve.mjs",
-    "start:own": "node serve.mjs stats-2"
+    "start:own": "node serve.mjs stats-2",
+    "start:lox": "node serve.mjs proxy"
   }
 }

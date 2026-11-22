@@ -2,3 +2,4 @@
 tools/loxone-settings.txt
 node_modules/
 stats-2/
+.env.local
