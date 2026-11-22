@@ -43,10 +43,24 @@ To pan, hold `shift` and drag with the mouse.
 To smoothen a graph (e.g. temperature), play with the value in the lower left corner of each graph.
 To fetch fresh data, use the reload button for that graph.
 
+Development
+-----------
+
+Requires [pnpm](https://pnpm.io). The dev server (`serve.mjs`, zero deps)
+mirrors the Miniserver layout - the app is served at `/loxgraph/`:
+
+    pnpm install
+    pnpm start       # http://127.0.0.1:8314/loxgraph/ against ./stats/
+    pnpm start:own   # same, but stats from ./stats-2/
+
+`stats-2/` is git-ignored - put your own stat XML files plus an
+`index.html` listing there. Responses are sent with `no-store`,
+a plain browser reload always picks up the current files.
+
 Contributions welcome!
 ----------------------
 
-*TODO describe how to set up dev. env, code style etc*
+*TODO describe code style etc*
 
 Contact
 -------

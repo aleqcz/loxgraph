@@ -49,7 +49,8 @@ http.createServer((req, res) => {
     return res.end()
   }
 
-  const route = ROUTES.find(r => pathname.startsWith(r.prefix))
+  // case-insensitive route match (Windows FS is case-insensitive anyway)
+  const route = ROUTES.find(r => pathname.toLowerCase().startsWith(r.prefix))
   if (!route) {
     res.writeHead(404)
     return res.end('404')
@@ -62,14 +63,19 @@ http.createServer((req, res) => {
     res.writeHead(403)
     return res.end('403')
   }
-  if (existsSync(file) && statSync(file).isDirectory()) file = join(file, 'index.html')
-  if (!existsSync(file) || !statSync(file).isFile()) {
+  let st = existsSync(file) ? statSync(file) : null
+  if (st?.isDirectory()) {
+    file = join(file, 'index.html')
+    st = existsSync(file) ? statSync(file) : null
+  }
+  if (!st?.isFile()) {
     res.writeHead(404)
     return res.end('404')
   }
 
   res.writeHead(200, {
     'Content-Type': MIME[extname(file).toLowerCase()] ?? 'application/octet-stream',
+    'Content-Length': st.size,
     'Cache-Control': 'no-store',
   })
   createReadStream(file).pipe(res)
