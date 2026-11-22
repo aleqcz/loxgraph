@@ -4,13 +4,17 @@
 // no-store on every response so a plain browser reload always picks up new files
 import http from 'node:http'
 import { createReadStream, existsSync, statSync } from 'node:fs'
-import { extname, join, normalize, sep } from 'node:path'
+import { extname, join, normalize, resolve, sep } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 const ROOT = fileURLToPath(new URL('.', import.meta.url))
 const PORT = 8314
 // stats dir selectable via CLI arg: `node serve.mjs stats-2` serves your own untracked data
-const STATS_DIR = process.argv[2] || 'stats'
+// resolved inside ROOT so an arg like `..` cannot escape the repo
+const STATS_DIR_ARG = process.argv[2] || 'stats'
+const STATS_DIR = resolve(ROOT, STATS_DIR_ARG).startsWith(resolve(ROOT) + sep)
+  ? STATS_DIR_ARG
+  : 'stats'
 
 const MIME = {
   '.html': 'text/html; charset=utf-8',
@@ -33,7 +37,13 @@ const ROUTES = [
 ]
 
 http.createServer((req, res) => {
-  const pathname = decodeURIComponent(new URL(req.url, 'http://x').pathname)
+  let pathname
+  try {
+    pathname = decodeURIComponent(new URL(req.url, 'http://x').pathname)
+  } catch {
+    res.writeHead(400)
+    return res.end('400')
+  }
   if (pathname === '/' || pathname === '/loxgraph') {
     res.writeHead(302, { Location: '/loxgraph/' })
     return res.end()
